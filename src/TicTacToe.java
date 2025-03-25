@@ -53,7 +53,6 @@ public class TicTacToe {
                 tile.setForeground(Color.darkGray);
                 tile.setFont(new Font("Arial",Font.BOLD,120));
                 tile.setFocusable(false);
-                //tile.setText(currentPlayer);
 
                 tile.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
@@ -73,8 +72,19 @@ public class TicTacToe {
                 });
             }
         }
-
+        JButton resetButton = new JButton("Restart");
+        resetButton.setFont(new Font("Arial",Font.BOLD,30));
+        resetButton.setFocusable(false);
+        resetButton.setBackground(Color.darkGray);
+        resetButton.setForeground(Color.white);
+        resetButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                resetGame();
+            }
+        });
+        frame.add(resetButton,BorderLayout.SOUTH);
     }
+    
     void checkWinner() {
         for(int i=0;i<3;i++) {
             if(board[i][0].getText().equals("")) continue;
@@ -123,6 +133,21 @@ public class TicTacToe {
             gameOver=true;
            }
     }
+    
+    void resetGame() {
+        for(int i=0;i<3;i++) {
+            for(int j=0; j<3;j++) {
+                board[i][j].setText("");
+                board[i][j].setBackground(Color.white);
+                board[i][j].setForeground(Color.darkGray);
+            }
+        }
+        currentPlayer=playerX;
+        textLabel.setText("Tic-Tac-Toe");
+        gameOver=false;
+        turn=0;
+    }
+
     void setWinner(JButton tile) {
          tile.setForeground(Color.blue);
          tile.setBackground(Color.gray);
