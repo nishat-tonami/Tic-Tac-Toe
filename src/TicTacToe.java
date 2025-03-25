@@ -77,9 +77,27 @@ public class TicTacToe {
         for(int i=0;i<3;i++) {
             if(board[i][0].getText()=="") continue;
             if(board[i][0].getText()==board[i][1].getText() && board[i][1].getText()==board[i][2].getText()) {
+                for(int k=0;k<3;k++) {
+                   setWinner(board[i][k]);
+                }
                 gameOver=true;
                 return;
             }
         }
+        for(int j=0;j<3;j++) {
+            if(board[0][j].getText()=="") continue;
+            if(board[0][j].getText()==board[1][j].getText() && board[1][j].getText()==board[2][j].getText()) {
+                for(int k=0;k<3;k++) {
+                   setWinner(board[k][j]);
+                }
+                gameOver=true;
+                return;
+            }
+        }
+    }
+    void setWinner(JButton tile) {
+         tile.setForeground(Color.blue);
+         tile.setBackground(Color.gray);
+         textLabel.setText(currentPlayer+" is the winner!");
     }
 }
