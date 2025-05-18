@@ -6,15 +6,15 @@ public class TicTacToe {
     int boardWidth=600;
     int boardHeight=650;
     
-    JFrame frame = new JFrame("Tic-Tac-Toe");
-    JLabel textLabel = new JLabel();
-    JPanel textPanel = new JPanel();
-    JPanel boardPanel = new JPanel();
+    JFrame frame=new JFrame("Tic-Tac-Toe");
+    JLabel textLabel=new JLabel();
+    JPanel textPanel=new JPanel();
+    JPanel boardPanel=new JPanel();
 
-    JButton [][] board = new JButton[3][3];
-    String playerX = "X";
-    String playerO = "O";
-    String currentPlayer = playerX;
+    JButton [][] board=new JButton[3][3];
+    Player player1=new Player1("Player X");
+    Player player2 = new Player2("Player O");
+    Player currentPlayer=player1;  
     
     boolean gameOver=false;
     int turn=0;
@@ -59,13 +59,13 @@ public class TicTacToe {
                         if(gameOver) return;
                         JButton tile=(JButton) e.getSource();
                         if(tile.getText().equals("")) {
-                          tile.setText(currentPlayer);
+                          tile.setText(currentPlayer.getSymbol());
                           turn++;
-                          checkWinner();
+                          gameOver=GameLogic.checkWinner(board,currentPlayer,textLabel,turn);
                           if(!gameOver) {
-                          if(currentPlayer==playerX) currentPlayer=playerO;
-                          else currentPlayer=playerX;
-                          textLabel.setText(currentPlayer+"'s Turn.");
+                          if(currentPlayer==player1) currentPlayer=player2;
+                          else currentPlayer=player1;
+                          textLabel.setText(currentPlayer.getName()+"'s Turn.");
                           }
                         }
                     }
@@ -85,54 +85,6 @@ public class TicTacToe {
         frame.add(resetButton,BorderLayout.SOUTH);
     }
     
-    void checkWinner() {
-        for(int i=0;i<3;i++) {
-            if(board[i][0].getText().equals("")) continue;
-            if(board[i][0].getText().equals(board[i][1].getText()) && board[i][1].getText().equals(board[i][2].getText())) {
-                for(int k=0;k<3;k++) {
-                   setWinner(board[i][k]);
-                }
-                gameOver=true;
-                return;
-            }
-        }
-        for(int j=0;j<3;j++) {
-            if(board[0][j].getText().equals("")) continue;
-            if(board[0][j].getText().equals(board[1][j].getText()) && board[1][j].getText().equals(board[2][j].getText())) {
-                for(int k=0;k<3;k++) {
-                   setWinner(board[k][j]);
-                }
-                gameOver=true;
-                return;
-            }
-        }
-
-        if(board[0][0].getText().equals(board[1][1].getText()) && board[1][1].getText().equals(board[2][2].getText()) && 
-           !board[0][0].getText().equals("")) {
-            for(int k=0;k<3;k++) {
-                setWinner((board[k][k]));
-            }
-            gameOver=true;
-            return;
-           }
-           if(board[0][2].getText().equals(board[1][1].getText()) && board[1][1].getText().equals(board[2][0].getText()) && 
-           !board[0][2].getText().equals("")) {
-            setWinner(board[0][2]);
-            setWinner(board[1][1]);
-            setWinner(board[2][0]);
-            gameOver=true;
-            return;
-           }
-
-           if(turn==9) {
-            for(int i=0;i<3;i++) {
-                for(int j=0;j<3;j++) {
-                    setTie(board[i][j]);
-                }
-            }
-            gameOver=true;
-           }
-    }
     
     void resetGame() {
         for(int i=0;i<3;i++) {
@@ -142,21 +94,10 @@ public class TicTacToe {
                 board[i][j].setForeground(Color.darkGray);
             }
         }
-        currentPlayer=playerX;
+        currentPlayer=player1;
         textLabel.setText("Tic-Tac-Toe");
         gameOver=false;
         turn=0;
     }
 
-    void setWinner(JButton tile) {
-         tile.setForeground(Color.blue);
-         tile.setBackground(Color.gray);
-         textLabel.setText(currentPlayer+" is the winner!");
-    }
-
-    void setTie(JButton tile) {
-        tile.setForeground(Color.green);
-        tile.setBackground(Color.gray);
-        textLabel.setText("Tie!");
-    }
 }
