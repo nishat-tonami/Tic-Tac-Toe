@@ -8,10 +8,8 @@ public class TicTacToe {
     
     JFrame frame=new JFrame("Tic-Tac-Toe");
     JLabel textLabel=new JLabel();
-    JPanel textPanel=new JPanel();
-    JPanel boardPanel=new JPanel();
+    Board gameBoard=new Board();
 
-    JButton [][] board=new JButton[3][3];
     Player player1=new Player1("Player X");
     Player player2 = new Player2("Player O");
     Player currentPlayer=player1;  
@@ -34,30 +32,21 @@ public class TicTacToe {
         textLabel.setText("Tic-Tac-Toe");
         textLabel.setOpaque(true);
 
-        textPanel.setLayout(new BorderLayout());
+        JPanel textPanel=new JPanel(new BorderLayout());
         textPanel.add(textLabel);
-        frame.add(textPanel);
         frame.add(textPanel,BorderLayout.NORTH);
 
-        boardPanel.setLayout(new GridLayout(3,3));
-        boardPanel.setBackground(Color.darkGray);
-        frame.add(boardPanel);
+        frame.add(gameBoard.getPanel(),BorderLayout.CENTER);
+
+        JButton[][] board = gameBoard.getTiles();
 
         for(int i=0;i<3;i++) {
             for(int j=0;j<3;j++) {
-                JButton tile = new JButton();
-                board [i][j]=tile;
-                boardPanel.add(tile);
-
-                tile.setBackground(Color.white);
-                tile.setForeground(Color.darkGray);
-                tile.setFont(new Font("Arial",Font.BOLD,120));
-                tile.setFocusable(false);
+                final JButton tile=board[i][j];
 
                 tile.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         if(gameOver) return;
-                        JButton tile=(JButton) e.getSource();
                         if(tile.getText().equals("")) {
                           tile.setText(currentPlayer.getSymbol());
                           turn++;
@@ -72,7 +61,7 @@ public class TicTacToe {
                 });
             }
         }
-        JButton resetButton = new JButton("Restart");
+        JButton resetButton=new JButton("Restart");
         resetButton.setFont(new Font("Arial",Font.BOLD,30));
         resetButton.setFocusable(false);
         resetButton.setBackground(Color.darkGray);
@@ -83,21 +72,14 @@ public class TicTacToe {
             }
         });
         frame.add(resetButton,BorderLayout.SOUTH);
+        frame.setVisible(true);
     }
     
-    
     void resetGame() {
-        for(int i=0;i<3;i++) {
-            for(int j=0; j<3;j++) {
-                board[i][j].setText("");
-                board[i][j].setBackground(Color.white);
-                board[i][j].setForeground(Color.darkGray);
-            }
-        }
+        gameBoard.resetBoard();
         currentPlayer=player1;
         textLabel.setText("Tic-Tac-Toe");
         gameOver=false;
         turn=0;
     }
-
 }
