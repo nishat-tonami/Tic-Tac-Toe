@@ -22,6 +22,13 @@ public class TicTacToe {
     boolean gameOver=false;
     int turn=0;
 
+    StartScreen startScreen;
+    boolean gameStarted=false;
+
+    EndScreen endScreen;
+
+    JPanel textPanel=new JPanel(new GridLayout(2, 1));
+
     TicTacToe() {
         frame.setVisible(true);
         frame.setSize(boardWidth,boardHeight);
@@ -49,12 +56,32 @@ public class TicTacToe {
         textLabel.setText("Tic-Tac-Toe");
         textLabel.setOpaque(true);
 
-        JPanel textPanel=new JPanel(new GridLayout(2, 1));
         textPanel.add(textLabel);
         textPanel.add(scoreLabel);
-        frame.add(textPanel,BorderLayout.NORTH);
+        //frame.add(textPanel,BorderLayout.NORTH);
 
+        startScreen=new StartScreen("endd.png",new StartScreen.StartListener() {
+        @Override
+        public void onStart() {
+           startGame();
+          }
+        });
+
+        endScreen=new EndScreen("/endscreen.jpeg",new EndScreen.EndListener() { 
+        @Override
+        public void onRestart() {
+        resetMatch();
+        frame.remove(endScreen);
         frame.add(gameBoard.getPanel(),BorderLayout.CENTER);
+        frame.add(textPanel, BorderLayout.NORTH);
+        frame.revalidate();
+        frame.repaint();
+        gameBoard.getPanel().requestFocusInWindow();
+    }
+});
+
+        frame.add(startScreen,BorderLayout.CENTER);
+        startScreen.requestFocusInWindow();
 
         JButton[][] board=gameBoard.getTiles();
 
@@ -79,49 +106,42 @@ public class TicTacToe {
                                 }
                                 updateScoreLabel();
                                 if(currentPlayer.getScore()==2 || consecutiveWins==2) {
-                                    JOptionPane.showMessageDialog(frame,currentPlayer.getName()+" wins the match!!");
-                                    resetMatch();
+                                        frame.remove(gameBoard.getPanel());
+                                        frame.remove(textPanel);
+                                        frame.add(endScreen,BorderLayout.CENTER);
+                                        frame.revalidate();
+                                        frame.repaint();
+                                        endScreen.setWinnerMessage(currentPlayer.getName()+" wins the match!!");
+                                        SwingUtilities.invokeLater(()->endScreen.requestFocusInWindow());
                                 } else {
                                     JOptionPane.showMessageDialog(frame,"Round over!!Starting next round.");
                                     resetGame();
                                 }
-
                             } else if(turn==9) {
                                 rounds++;
                                 consecutiveWins=0;
                                 lastWinner=null;
                                 GameLogic.highlightTie(board);
-                                textLabel.setText("Tie! Try again!");
+                                textLabel.setText("Tie!Try again!");
                                 updateScoreLabel();
                                if(rounds==2 && player1.getScore()<2 && player2.getScore()<2) {
-                                JOptionPane.showMessageDialog(frame,"Match tied after 3 rounds!");
+                                JOptionPane.showMessageDialog(frame,"Match tied!");
                                 resetMatch();
                              } else {
                                 JOptionPane.showMessageDialog(frame,"It's a tie! Starting next round.");
                                 resetGame();
                                }
                             } 
-                          else {
-                          if(currentPlayer==player1) currentPlayer=player2;
-                          else currentPlayer=player1;
-                          textLabel.setText(currentPlayer.getName()+"'s Turn.");
+                              else {
+                                if(currentPlayer==player1) currentPlayer=player2;
+                                else currentPlayer=player1;
+                                 textLabel.setText(currentPlayer.getName()+"'s Turn.");
                           }
                         }
                     }
                 });
             }
         }
-        JButton resetButton=new JButton("Restart");
-        resetButton.setFont(new Font("Arial",Font.BOLD,30));
-        resetButton.setFocusable(false);
-        resetButton.setBackground(Color.darkGray);
-        resetButton.setForeground(Color.white);
-        resetButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                resetGame();
-            }
-        });
-        frame.add(resetButton,BorderLayout.SOUTH);
         updateScoreLabel();
         frame.setVisible(true);
     }
@@ -129,7 +149,7 @@ public class TicTacToe {
     void resetGame() {
         gameBoard.resetBoard();
         currentPlayer=player1;
-        textLabel.setText(currentPlayer.getName() + "'s Turn.");
+        textLabel.setText(currentPlayer.getName()+"'s Turn.");
         gameOver=false;
         turn=0;
     }
@@ -142,9 +162,21 @@ public class TicTacToe {
         consecutiveWins=0;
         lastWinner=null;
         updateScoreLabel();
-        textLabel.setText(currentPlayer.getName() + "'s Turn.");
+        textLabel.setText(currentPlayer.getName()+"'s Turn.");
     }
 
+    void startGame() {
+       if(gameStarted) return;
+       gameStarted=true;
+       frame.remove(startScreen);
+       frame.add(gameBoard.getPanel(),BorderLayout.CENTER);
+       frame.add(textPanel,BorderLayout.NORTH);
+       frame.revalidate();
+       frame.repaint();
+       gameBoard.getPanel().requestFocusInWindow();
+       textLabel.setText(currentPlayer.getName()+"'s Turn.");
+    }
+    
     void updateScoreLabel() {
         scoreLabel.setText(player1.getName()+"'s Score : "+player1.getScore()+" | "+player2.getName()+"'s Score : "+player2.getScore());
     }

@@ -38,12 +38,7 @@ public class GameLogic {
             textLabel.setText(currentPlayer.getName()+" is the winner!");
             return true;
         }
-        
-        if(turn==9) {
-            highlightTie(board);
-            textLabel.setText("Tie! Try again!");
-            return false;
-        }
+
         return false;
     }
 
