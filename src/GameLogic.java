@@ -42,7 +42,7 @@ public class GameLogic {
         if(turn==9) {
             highlightTie(board);
             textLabel.setText("Tie! Try again!");
-            return true;
+            return false;
         }
         return false;
     }
