@@ -3,8 +3,8 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class Board {
-    private JButton[][] tiles=new JButton[3][3];
-    private JPanel panel;
+    private final JButton[][] tiles=new JButton[3][3];
+    private final JPanel panel;
 
     public Board() {
         panel=new JPanel(new GridLayout(3,3));
@@ -13,13 +13,14 @@ public class Board {
     }
 
     private void initializeTiles() {
-        for(int i= 0;i<3;i++) {
+        for(int i=0;i<3;i++) {
             for (int j=0;j<3;j++) {
                 JButton tile=new JButton();
                 tile.setFont(new Font("Arial",Font.BOLD,120));
                 tile.setBackground(Color.white);
                 tile.setForeground(Color.darkGray);
-                tile.setFocusable(false);
+                tile.setFocusPainted(false);
+                tile.setMargin(new Insets(0,0,0,0));
                 tiles[i][j]=tile;
                 panel.add(tile);
             }

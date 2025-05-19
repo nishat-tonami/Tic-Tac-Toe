@@ -30,18 +30,12 @@ public class TicTacToe {
     JPanel textPanel=new JPanel(new GridLayout(2,1));
 
     TicTacToe() {
-        frame.setVisible(true);
+
         frame.setSize(boardWidth,boardHeight);
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
-
-        textLabel.setBackground(Color.darkGray);
-        textLabel.setForeground(Color.white);
-        textLabel.setFont(new Font("Courier New",Font.BOLD,50));
-        textLabel.setHorizontalAlignment(JLabel.CENTER);
-        textLabel.setOpaque(true);
 
         scoreLabel.setBackground(Color.gray);
         scoreLabel.setForeground(Color.white);
@@ -58,7 +52,6 @@ public class TicTacToe {
 
         textPanel.add(textLabel);
         textPanel.add(scoreLabel);
-        //frame.add(textPanel,BorderLayout.NORTH);
 
         startScreen=new StartScreen("startscreen.png",new StartScreen.StartListener() {
         @Override
@@ -95,7 +88,7 @@ public class TicTacToe {
                         if(tile.getText().equals("")) {
                           tile.setText(currentPlayer.getSymbol());
                           turn++;
-                          gameOver=GameLogic.checkWinner(board,currentPlayer,textLabel,turn);
+                          gameOver=GameLogic.checkWinner(board);
                           if(gameOver) {
                                 rounds++;
                                 currentPlayer.incrementScore();
@@ -114,28 +107,20 @@ public class TicTacToe {
                                         endScreen.setWinnerMessage(currentPlayer.getName()+" wins the match!!");
                                         SwingUtilities.invokeLater(()->endScreen.requestFocusInWindow());
                                 } else {
-                                    JOptionPane.showMessageDialog(frame,"Round over!!Starting next round.");
-                                    resetGame();
+                                    showRoundOverMessage(currentPlayer.getName()+" wins the round!");
                                 }
-                            } else if(turn==9) {
+                        }  else if(turn==9) {
                                 rounds++;
                                 consecutiveWins=0;
                                 lastWinner=null;
-                                GameLogic.highlightTie(board);
-                                textLabel.setText("Tie!Try again!");
                                 updateScoreLabel();
-                               if(rounds==2 && player1.getScore()<2 && player2.getScore()<2) {
-                                JOptionPane.showMessageDialog(frame,"Match tied!");
-                                resetMatch();
-                             } else {
-                                JOptionPane.showMessageDialog(frame,"It's a tie!Starting next round.");
-                                resetGame();
-                               }
+                                showRoundOverMessage("It's a Tie!");
+                               
                             } 
                               else {
                                 if(currentPlayer==player1) currentPlayer=player2;
                                 else currentPlayer=player1;
-                                 textLabel.setText(currentPlayer.getName()+"'s Turn.");
+                                textLabel.setText(currentPlayer.getName()+"'s Turn.");
                           }
                         }
                     }
@@ -180,5 +165,40 @@ public class TicTacToe {
     void updateScoreLabel() {
         scoreLabel.setText(player1.getName()+"'s Score : "+player1.getScore()+" | "+player2.getName()+"'s Score : "+player2.getScore());
     }
+    
+    void showRoundOverMessage(String msg) {
 
+    JLayeredPane layeredPane=frame.getLayeredPane();
+
+    String imagePath="popup.jpeg";
+    Color msgClr=Color.BLACK;
+    int vtOffset=60;
+
+    RoundOverScreen overlay=new RoundOverScreen(
+        imagePath,
+        msg,
+        msgClr,
+        vtOffset
+    );
+
+    overlay.setBounds(0,0,frame.getWidth(),frame.getHeight());
+    overlay.setVisible(true);
+
+    layeredPane.add(overlay,JLayeredPane.POPUP_LAYER);
+    layeredPane.setLayer(overlay,JLayeredPane.POPUP_LAYER);
+
+    frame.revalidate();
+    frame.repaint();
+
+    Timer timer=new Timer(2000,new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            layeredPane.remove(overlay);
+            layeredPane.repaint();
+            resetGame();
+        }
+    });
+
+    timer.setRepeats(false);
+    timer.start();
+}
 }
