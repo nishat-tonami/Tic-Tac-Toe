@@ -10,7 +10,7 @@ public class EndScreen extends JPanel implements KeyListener {
 
     private Image backgroundImage;
     private EndListener listener;
-    private String winnerMessage= "";
+    private String winnerMessage="";
     private final String instruction="Press 'SPACEBAR' to Restart!";
 
     public EndScreen(String imagePath,EndListener listener) {

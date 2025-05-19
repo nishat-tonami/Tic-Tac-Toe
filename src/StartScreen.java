@@ -10,8 +10,9 @@ public class StartScreen extends JPanel implements KeyListener {
 
     private Image backgroundImage;
     private StartListener listener;
+    private final String instruction="Press 'S' to Start!";
 
-    public StartScreen(String imagePath, StartListener listener) {
+    public StartScreen(String imagePath,StartListener listener) {
         this.listener=listener;
         backgroundImage=new ImageIcon(getClass().getResource(imagePath)).getImage();
         setFocusable(true);
@@ -25,11 +26,10 @@ public class StartScreen extends JPanel implements KeyListener {
         g.drawImage(backgroundImage,0,0,getWidth(),getHeight(),this);
         g.setColor(Color.BLACK);
         g.setFont(new Font("Comic Sans MS",Font.BOLD,44));
-        String msg="Press 'S' to Start!";
         FontMetrics fm=g.getFontMetrics();
-        int x=(getWidth()-fm.stringWidth(msg))/2;
+        int x=(getWidth()-fm.stringWidth(instruction))/2;
         int y=getHeight()-100;
-        g.drawString(msg,x,y);
+        g.drawString(instruction,x,y);
     }
 
     @Override
