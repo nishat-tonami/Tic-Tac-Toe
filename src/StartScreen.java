@@ -24,7 +24,7 @@ public class StartScreen extends JPanel implements KeyListener {
         super.paintComponent(g);
         g.drawImage(backgroundImage,0,0,getWidth(),getHeight(),this);
         g.setColor(Color.BLACK);
-        g.setFont(new Font("Arial",Font.BOLD,36));
+        g.setFont(new Font("Comic Sans MS",Font.BOLD,44));
         String msg="Press 'S' to Start!";
         FontMetrics fm=g.getFontMetrics();
         int x=(getWidth()-fm.stringWidth(msg))/2;

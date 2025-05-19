@@ -33,7 +33,7 @@ public class EndScreen extends JPanel implements KeyListener {
         requestFocusInWindow();
         g.drawImage(backgroundImage,0,0,getWidth(),getHeight(),this);
         g.setColor(Color.BLACK);
-        g.setFont(new Font("Arial", Font.BOLD, 36));
+        g.setFont(new Font("Comic Sans MS",Font.BOLD,37));
         FontMetrics fm=g.getFontMetrics();
         int x1=(getWidth()-fm.stringWidth(winnerMessage))/2;
         int y1=getHeight()-150;

@@ -3,8 +3,8 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class TicTacToe {
-    int boardWidth=600;
-    int boardHeight=650;
+    final int boardWidth=600;
+    final int boardHeight=650;
     
     JFrame frame=new JFrame("Tic-Tac-Toe");
     JLabel textLabel=new JLabel();
@@ -12,7 +12,7 @@ public class TicTacToe {
     Board gameBoard=new Board();
 
     Player player1=new Player1("Player X");
-    Player player2 = new Player2("Player O");
+    Player player2=new Player2("Player O");
     Player currentPlayer=player1; 
     Player lastWinner=null;
     
@@ -27,7 +27,7 @@ public class TicTacToe {
 
     EndScreen endScreen;
 
-    JPanel textPanel=new JPanel(new GridLayout(2, 1));
+    JPanel textPanel=new JPanel(new GridLayout(2,1));
 
     TicTacToe() {
         frame.setVisible(true);
@@ -39,19 +39,19 @@ public class TicTacToe {
 
         textLabel.setBackground(Color.darkGray);
         textLabel.setForeground(Color.white);
-        textLabel.setFont(new Font("Arial",Font.BOLD,50));
+        textLabel.setFont(new Font("Courier New",Font.BOLD,50));
         textLabel.setHorizontalAlignment(JLabel.CENTER);
         textLabel.setOpaque(true);
 
         scoreLabel.setBackground(Color.gray);
         scoreLabel.setForeground(Color.white);
-        scoreLabel.setFont(new Font("Arial",Font.BOLD, 20));
+        scoreLabel.setFont(new Font("Courier New",Font.BOLD,20));
         scoreLabel.setHorizontalAlignment(JLabel.CENTER);
         scoreLabel.setOpaque(true);
 
         textLabel.setBackground(Color.darkGray);
         textLabel.setForeground(Color.white);
-        textLabel.setFont(new Font("Arial",Font.BOLD,50));
+        textLabel.setFont(new Font("Courier New",Font.BOLD,40));
         textLabel.setHorizontalAlignment(JLabel.CENTER);
         textLabel.setText("Tic-Tac-Toe");
         textLabel.setOpaque(true);
@@ -60,14 +60,14 @@ public class TicTacToe {
         textPanel.add(scoreLabel);
         //frame.add(textPanel,BorderLayout.NORTH);
 
-        startScreen=new StartScreen("endd.png",new StartScreen.StartListener() {
+        startScreen=new StartScreen("startscreen.png",new StartScreen.StartListener() {
         @Override
         public void onStart() {
            startGame();
           }
         });
 
-        endScreen=new EndScreen("/endscreen.jpeg",new EndScreen.EndListener() { 
+        endScreen=new EndScreen("endscreen.jpeg",new EndScreen.EndListener() { 
         @Override
         public void onRestart() {
         resetMatch();
@@ -128,7 +128,7 @@ public class TicTacToe {
                                 JOptionPane.showMessageDialog(frame,"Match tied!");
                                 resetMatch();
                              } else {
-                                JOptionPane.showMessageDialog(frame,"It's a tie! Starting next round.");
+                                JOptionPane.showMessageDialog(frame,"It's a tie!Starting next round.");
                                 resetGame();
                                }
                             } 
