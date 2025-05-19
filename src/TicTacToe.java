@@ -185,12 +185,7 @@ public class TicTacToe {
     Color msgClr=Color.BLACK;
     int vtOffset=60;
 
-    RoundOverScreen overlay=new RoundOverScreen(
-        imagePath,
-        msg,
-        msgClr,
-        vtOffset
-    );
+    RoundOverScreen overlay=new RoundOverScreen(imagePath,msg,msgClr,vtOffset);
 
     overlay.setBounds(0,0,frame.getWidth(),frame.getHeight());
     overlay.setVisible(true);
@@ -215,7 +210,7 @@ public class TicTacToe {
    void showMatchWinner(Player winner) {
         frame.remove(gameBoard.getPanel());
         frame.remove(textPanel);
-        frame.add(endScreen, BorderLayout.CENTER);
+        frame.add(endScreen,BorderLayout.CENTER);
         frame.revalidate();
         frame.repaint();
         endScreen.setWinnerMessage(winner.getName()+" wins the match!!");
@@ -224,7 +219,7 @@ public class TicTacToe {
     void showMatchDraw() {
         frame.remove(gameBoard.getPanel());
         frame.remove(textPanel);
-        frame.add(endScreen, BorderLayout.CENTER);
+        frame.add(endScreen,BorderLayout.CENTER);
         frame.revalidate();
         frame.repaint();
         endScreen.setWinnerMessage("Match ends in a draw!");

@@ -10,7 +10,7 @@ public class EndScreen extends JPanel implements KeyListener {
 
     private Image backgroundImage;
     private EndListener listener;
-    private String winnerMessage="";
+    private String winnerMsg="";
     private final String instruction="Press 'SPACEBAR' to Restart!";
 
     public EndScreen(String imagePath,EndListener listener) {
@@ -20,8 +20,8 @@ public class EndScreen extends JPanel implements KeyListener {
         addKeyListener(this);
     }
     
-    public void setWinnerMessage(String message) {
-        this.winnerMessage=message;
+    public void setWinnerMessage(String msg) {
+        this.winnerMsg=msg;
         repaint();
         requestFocusInWindow();
     }
@@ -35,9 +35,9 @@ public class EndScreen extends JPanel implements KeyListener {
         g.setColor(Color.BLACK);
         g.setFont(new Font("Comic Sans MS",Font.BOLD,37));
         FontMetrics fm=g.getFontMetrics();
-        int x1=(getWidth()-fm.stringWidth(winnerMessage))/2;
+        int x1=(getWidth()-fm.stringWidth(winnerMsg))/2;
         int y1=getHeight()-150;
-        g.drawString(winnerMessage,x1,y1);
+        g.drawString(winnerMsg,x1,y1);
         int x2=(getWidth()-fm.stringWidth(instruction))/2;
         int y2=getHeight()-100;
         g.drawString(instruction,x2,y2);

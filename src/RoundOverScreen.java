@@ -10,7 +10,7 @@ public class RoundOverScreen extends JPanel {
 
     public RoundOverScreen(String imagePath,String msg,Color txtClr,int vtOffset) {
 
-        this.backgroundImage = new ImageIcon(getClass().getResource(imagePath)).getImage();
+        this.backgroundImage=new ImageIcon(getClass().getResource(imagePath)).getImage();
         this.msg=msg;
         this.txtClr=txtClr;
         this.vtOffset=vtOffset;
