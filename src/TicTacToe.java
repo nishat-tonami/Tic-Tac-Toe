@@ -60,6 +60,9 @@ public class TicTacToe {
           }
         });
 
+        frame.add(startScreen,BorderLayout.CENTER);
+        startScreen.requestFocusInWindow();
+
         endScreen=new EndScreen("endscreen.jpeg",new EndScreen.EndListener() { 
         @Override
         public void onRestart() {
@@ -72,9 +75,6 @@ public class TicTacToe {
         gameBoard.getPanel().requestFocusInWindow();
     }
 });
-
-        frame.add(startScreen,BorderLayout.CENTER);
-        startScreen.requestFocusInWindow();
 
         JButton[][] board=gameBoard.getTiles();
 
@@ -99,23 +99,34 @@ public class TicTacToe {
                                 }
                                 updateScoreLabel();
                                 if(currentPlayer.getScore()==2 || consecutiveWins==2) {
-                                        frame.remove(gameBoard.getPanel());
-                                        frame.remove(textPanel);
-                                        frame.add(endScreen,BorderLayout.CENTER);
-                                        frame.revalidate();
-                                        frame.repaint();
-                                        endScreen.setWinnerMessage(currentPlayer.getName()+" wins the match!!");
-                                        SwingUtilities.invokeLater(()->endScreen.requestFocusInWindow());
-                                } else {
+                                    showMatchWinner(currentPlayer);
+                                } else if(rounds==3) {
+                                    int p1=player1.getScore();
+                                    int p2=player2.getScore();
+
+                                    if(p1>p2) showMatchWinner(player1);
+                                    else if(p2>p1) showMatchWinner(player2);
+                                    else showMatchDraw();
+                            }
+                                else {
                                     showRoundOverMessage(currentPlayer.getName()+" wins the round!");
                                 }
-                        }  else if(turn==9) {
+                            }   else if(turn==9) {
                                 rounds++;
                                 consecutiveWins=0;
                                 lastWinner=null;
                                 updateScoreLabel();
-                                showRoundOverMessage("It's a Tie!");
                                
+                                if(rounds==3) {
+                                int p1=player1.getScore();
+                                int p2=player2.getScore();
+
+                                if(p1>p2) showMatchWinner(player1);
+                                else if(p2>p1) showMatchWinner(player2);
+                                else showMatchDraw();
+                                }
+
+                                else showRoundOverMessage("It's a Tie!");
                             } 
                               else {
                                 if(currentPlayer==player1) currentPlayer=player2;
@@ -201,4 +212,22 @@ public class TicTacToe {
     timer.setRepeats(false);
     timer.start();
 }
+   void showMatchWinner(Player winner) {
+        frame.remove(gameBoard.getPanel());
+        frame.remove(textPanel);
+        frame.add(endScreen, BorderLayout.CENTER);
+        frame.revalidate();
+        frame.repaint();
+        endScreen.setWinnerMessage(winner.getName()+" wins the match!!");
+        SwingUtilities.invokeLater(()->endScreen.requestFocusInWindow());
+    }
+    void showMatchDraw() {
+        frame.remove(gameBoard.getPanel());
+        frame.remove(textPanel);
+        frame.add(endScreen, BorderLayout.CENTER);
+        frame.revalidate();
+        frame.repaint();
+        endScreen.setWinnerMessage("Match ends in a draw!");
+        SwingUtilities.invokeLater(()->endScreen.requestFocusInWindow());
+    }
 }
